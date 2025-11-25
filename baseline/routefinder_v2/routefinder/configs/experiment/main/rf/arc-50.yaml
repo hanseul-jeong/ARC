@@ -1,0 +1,34 @@
+# @package _global_
+
+# Override defaults by taking another config
+defaults:
+  - /experiment/rfbase-50.yaml
+  - _self_
+
+env:
+  generator_params:
+    variant_preset: "all"
+
+model:
+  _target_: experiments.arc.model.ARCModel
+  nce_lambda: 0.8
+  policy:
+    _target_: experiments.arc.policy.ARCCompPolicy
+    normalization: "rms"
+    encoder_use_prenorm: True
+    encoder_use_post_layers_norm: True
+    parallel_gated_kwargs:
+      mlp_activation: "silu"
+    scene: 112
+    nce_temp: 0.12
+    decoder: ARCDecoder  # decoder context vector
+    use_graph_context: false
+    num_glayers: 3
+
+# Logging: we use Wandb in this case
+logger:
+  wandb:
+    tags: ["rf", "${env.name}"]
+    group: "${env.generator_params.num_loc}-${env.name}"
+    name: "rf-${env.generator_params.num_loc}-main"
+    project: "routefinder-main"

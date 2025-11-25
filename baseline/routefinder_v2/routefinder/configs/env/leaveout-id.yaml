@@ -1,0 +1,17 @@
+# _target_: routefinder.envs.mtvrp.MTVRPEnv
+_target_: experiments.arc.env.ARCEnv
+name: leaveout
+
+check_solution: False # for faster training
+
+generator_params:
+  num_loc: 20
+  variant_preset: "all"
+  leaveout: [
+  ]
+  c: 0.2  # time window c
+  backhaul_ratio: 0.2
+  sample_backhaul_class: false
+  control_c: false
+
+ 
